@@ -1,6 +1,7 @@
 package com.example.spring.controller;
 
 import com.example.spring.exception.NotIdException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ public class RestExceptionHandler
 
     @ExceptionHandler(value = {
             IllegalArgumentException.class,
+            EmptyResultDataAccessException.class,
             NotIdException.class
     })
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {

@@ -19,7 +19,7 @@ public class EngineService {
 
     public boolean create(Engine engine, Long id) {
         Car car = carRepository.getById(id);
-        if(car.getEngine() == null | car.getEngine() == null){
+        if (car.getEngine() == null | car.getEngine() == null) {
             car.setEngine(engine);
             engine.setCar(car);
             repository.save(engine);
@@ -31,7 +31,7 @@ public class EngineService {
 
     public Engine getEngine(Long id) {
         Optional<Engine> engine = repository.findById(id);
-        if(engine.isEmpty()){
+        if (engine.isEmpty()) {
             throw new NotIdException("Engine not found");
         }
         return engine.get();
@@ -43,7 +43,7 @@ public class EngineService {
 
     public boolean updateEngine(Long id, Engine engine) {
         Optional<Engine> optional = repository.findById(id);
-        if(optional.isPresent()){
+        if (optional.isPresent()) {
             engine.setId(optional.get().getId());
             repository.save(engine);
             return true;
@@ -51,12 +51,7 @@ public class EngineService {
         return false;
     }
 
-    public boolean deleteEngineById(Long id) {
-        Optional<Engine> optional = repository.findById(id);
-        if(optional.isPresent()){
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteEngineById(Long id) {
+        repository.deleteById(id);
     }
 }

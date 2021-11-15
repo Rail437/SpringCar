@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,7 @@ public class GearService {
 
     public boolean create(Gear gear, Long id) {
         Car car = carRepository.getById(id);
-        if(car.getEngine() == null){
+        if (car.getEngine() == null) {
             car.addGear(gear);
             gear.setCar(car);
             repository.save(gear);
@@ -33,7 +32,7 @@ public class GearService {
 
     public Gear getGear(Long id) {
         Optional<Gear> gearFromDB = repository.findById(id);
-        if(gearFromDB.isEmpty()){
+        if (gearFromDB.isEmpty()) {
             throw new NotIdException("Gear not found");
         }
         return gearFromDB.get();
@@ -45,7 +44,7 @@ public class GearService {
 
     public boolean updateGear(Long id, Gear gear) {
         Optional<Gear> gearFromDB = repository.findById(id);
-        if(gearFromDB.isPresent()){
+        if (gearFromDB.isPresent()) {
             gear.setId(gearFromDB.get().getId());
             repository.save(gear);
             return true;
@@ -53,12 +52,7 @@ public class GearService {
         return false;
     }
 
-    public boolean deleteGearById(Long id) {
-        Optional<Gear> gearFromDB = repository.findById(id);
-        if(gearFromDB.isPresent()){
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteGearById(Long id) {
+        repository.deleteById(id);
     }
 }

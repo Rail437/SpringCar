@@ -1,7 +1,6 @@
 package com.example.spring.service;
 
 import com.example.spring.entity.Car;
-import com.example.spring.entity.Engine;
 import com.example.spring.entity.SteeringWheel;
 import com.example.spring.repository.CarRepository;
 import com.example.spring.repository.SteeringWheelRepo;
@@ -20,7 +19,7 @@ public class SteeringWheelService {
 
     public boolean create(SteeringWheel steeringWheel, Long id) {
         Car car = carRepository.getById(id);
-        if(car.getEngine() == null | car.getSteeringWheel() == null){
+        if (car.getEngine() == null | car.getSteeringWheel() == null) {
             car.setSteeringWheel(steeringWheel);
             steeringWheel.setCar(car);
             repository.save(steeringWheel);
@@ -40,7 +39,7 @@ public class SteeringWheelService {
 
     public boolean updateSteeringWheel(Long id, SteeringWheel steeringWheel) {
         Optional<SteeringWheel> optional = repository.findById(id);
-        if(optional.isPresent()){
+        if (optional.isPresent()) {
             steeringWheel.setId(optional.get().getId());
             repository.save(steeringWheel);
             return true;
@@ -48,13 +47,7 @@ public class SteeringWheelService {
         return false;
     }
 
-    public boolean deleteSteeringWheelById(Long id) {
-        Optional<SteeringWheel> optional = repository.findById(id);
-        if(optional.isPresent()){
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteSteeringWheelById(Long id) {
+        repository.deleteById(id);
     }
-
 }

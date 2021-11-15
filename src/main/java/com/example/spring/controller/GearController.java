@@ -17,9 +17,9 @@ public class GearController {
 
     private GearService gearService;
 
-    @PostMapping({"/create/{id}","/create"})
-    public ResponseEntity<HttpStatus> createGear(@RequestBody Gear gear, @PathVariable Long id){
-        if(id == null){
+    @PostMapping({"/create/{id}", "/create"})
+    public ResponseEntity<HttpStatus> createGear(@RequestBody Gear gear, @PathVariable Long id) {
+        if (id == null) {
             throw new NotIdException("Parameter - id is empty");
         }
         return gearService.create(gear, id) ?
@@ -28,35 +28,34 @@ public class GearController {
     }
 
     @GetMapping({"/read"})
-    public List<Gear> readGear(){
+    public List<Gear> readGear() {
         return gearService.getGear();
     }
 
     @GetMapping({"/read/{id}"})
-    public Gear readGearById(@PathVariable Long id){
-        if(id == null) {
+    public Gear readGearById(@PathVariable Long id) {
+        if (id == null) {
             throw new NotIdException("Parameter - id is empty");
         }
         return gearService.getGear(id);
     }
 
-    @PostMapping({"/update/{id}","/update"})
+    @PostMapping({"/update/{id}", "/update"})
     public ResponseEntity updateGear(@RequestBody Gear gear, @PathVariable Long id) {
-        if(id == null){
+        if (id == null) {
             throw new NotIdException("Parameter - id is empty");
         }
-        return  gearService.updateGear(id,gear) ?
-                new ResponseEntity(HttpStatus.OK):
-                new ResponseEntity("The Gear with this id was not found.",HttpStatus.NOT_MODIFIED);
+        return gearService.updateGear(id, gear) ?
+                new ResponseEntity(HttpStatus.OK) :
+                new ResponseEntity("The Gear with this id was not found.", HttpStatus.NOT_MODIFIED);
     }
 
-    @PostMapping({"/delete/{id}","/delete"})
-    public ResponseEntity deleteGear(@PathVariable Long id){
-        if(id == null){
+    @PostMapping({"/delete/{id}", "/delete"})
+    public ResponseEntity deleteGear(@PathVariable Long id) {
+        if (id == null) {
             throw new NotIdException("Parameter - id is empty");
         }
-        return gearService.deleteGearById(id) ?
-                new ResponseEntity(HttpStatus.OK):
-                new ResponseEntity("The Gear with this id was not found.",HttpStatus.NOT_MODIFIED);
+        gearService.deleteGearById(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

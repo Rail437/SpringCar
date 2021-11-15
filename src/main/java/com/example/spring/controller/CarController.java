@@ -4,7 +4,6 @@ import com.example.spring.entity.Car;
 import com.example.spring.exception.NotIdException;
 import com.example.spring.service.CarService;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ public class CarController {
                 new ResponseEntity("This car already exists.", HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping( "/read")
+    @GetMapping("/read")
     public List<Car> readCar() {
         return carService.getCar();
     }
@@ -45,21 +44,12 @@ public class CarController {
                 new ResponseEntity("The car with this id was not found.", HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Странно, я через постман почему то не вижу сообщения в body(
-     *
-     * @param id
-     */
-
     @PostMapping({"/delete/{id}", "/delete"})
     public ResponseEntity deleteCar(@PathVariable(required = false) Long id) {
         if (id == null) {
             throw new NotIdException("Parameter - id is empty");
         }
-        return carService.deleteCarById(id) ?
-                (ResponseEntity) ResponseEntity.status(HttpStatus.OK) :
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The car with this id was not found.");
+        carService.deleteCarById(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
-
-
 }

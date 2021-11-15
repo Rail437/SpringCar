@@ -18,7 +18,7 @@ public class CarService {
 
     public boolean create(Car car) {
         Optional<Car> carFromDB = carRepository.findByWIN(car.getWIN());
-        if(carFromDB.isEmpty()){
+        if (carFromDB.isEmpty()) {
             car.setId(null);
             carRepository.save(car);
             return true;
@@ -28,7 +28,7 @@ public class CarService {
 
     public Car getCar(Long id) {
         Optional<Car> car = carRepository.findById(id);
-        if(car.isEmpty()){
+        if (car.isEmpty()) {
             throw new NotIdException("Car is not found");
         }
         return car.get();
@@ -40,7 +40,7 @@ public class CarService {
 
     public boolean updateCar(Long id, Car car) {
         Optional<Car> updateCar = carRepository.findById(id);
-        if(updateCar.isPresent()){
+        if (updateCar.isPresent()) {
             car.setId(updateCar.get().getId());
             carRepository.save(car);
             return true;
@@ -49,12 +49,7 @@ public class CarService {
     }
 
 
-    public boolean deleteCarById(Long id) {
-        Optional<Car> deleteCar = carRepository.findById(id);
-        if(deleteCar.isPresent()){
-            carRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteCarById(Long id) {
+        carRepository.deleteById(id);
     }
 }
