@@ -3,6 +3,7 @@ package com.example.spring.controller;
 
 import com.example.spring.entity.Engine;
 import com.example.spring.entity.SteeringWheel;
+import com.example.spring.exception.NotIdException;
 import com.example.spring.service.SteeringWheelService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class SteeringWheelController {
     @PostMapping({"/create/{id}","/create"})
     public ResponseEntity createSteeringWheel(@RequestBody SteeringWheel steeringWheel, @PathVariable Long id){
         if(id == null){
-            return new ResponseEntity("Parameter - car_id is empty", HttpStatus.BAD_REQUEST);
+            throw new NotIdException("Parameter - id is empty");
         }
         return service.create(steeringWheel, id) ?
                 new ResponseEntity<>(HttpStatus.OK):
@@ -44,7 +45,7 @@ public class SteeringWheelController {
     @PostMapping({"/update/{id}","/update"})
     public ResponseEntity updateEngine(@RequestBody SteeringWheel steeringWheel, @PathVariable Long id) {
         if(id == null){
-            return new ResponseEntity("Parameter - id is empty" ,HttpStatus.NOT_MODIFIED);
+            throw new NotIdException("Parameter - id is empty");
         }
         return  service.updateSteeringWheel(id,steeringWheel) ?
                 new ResponseEntity(HttpStatus.OK):
@@ -54,7 +55,7 @@ public class SteeringWheelController {
     @PostMapping({"/delete/{id}","/delete"})
     public ResponseEntity deleteSteeringWheel(@PathVariable Long id){
         if(id == null){
-            return new ResponseEntity("Parameter - id is empty" ,HttpStatus.NOT_MODIFIED);
+            throw new NotIdException("Parameter - id is empty");
         }
         return service.deleteSteeringWheelById(id) ?
                 new ResponseEntity(HttpStatus.OK):

@@ -2,11 +2,11 @@ package com.example.spring.service;
 
 
 import com.example.spring.entity.Car;
+import com.example.spring.exception.NotIdException;
 import com.example.spring.repository.CarRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,11 +26,12 @@ public class CarService {
         return false;
     }
 
-    public List<Car> getCar(Long id) {
-        List<Car> result = new ArrayList<>();
+    public Car getCar(Long id) {
         Optional<Car> car = carRepository.findById(id);
-        car.ifPresent(result::add);
-        return result;
+        if(car.isEmpty()){
+            throw new NotIdException("Car is not found");
+        }
+        return car.get();
     }
 
     public List<Car> getCar() {
@@ -47,9 +48,10 @@ public class CarService {
         return false;
     }
 
+
     public boolean deleteCarById(Long id) {
-        Optional<Car> updateCar = carRepository.findById(id);
-        if(updateCar.isPresent()){
+        Optional<Car> deleteCar = carRepository.findById(id);
+        if(deleteCar.isPresent()){
             carRepository.deleteById(id);
             return true;
         }

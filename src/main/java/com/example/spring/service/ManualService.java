@@ -2,6 +2,7 @@ package com.example.spring.service;
 
 import com.example.spring.entity.Car;
 import com.example.spring.entity.Manual;
+import com.example.spring.exception.NotIdException;
 import com.example.spring.repository.CarRepository;
 import com.example.spring.repository.ManualRepository;
 import lombok.AllArgsConstructor;
@@ -43,8 +44,12 @@ public class ManualService {
     }
 
 
-    public List<Manual> getManual(Long id) {
-        return new ArrayList<>(Collections.singleton(repository.findById(id).get()));
+    public Manual getManual(Long id) {
+        Optional<Manual> manual = repository.findById(id);
+        if(manual.isEmpty()){
+            throw new NotIdException("Manual not found");
+        }
+        return manual.get();
     }
 
     public List<Manual> getManual() {

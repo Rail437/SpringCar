@@ -2,6 +2,7 @@ package com.example.spring.service;
 
 import com.example.spring.entity.Car;
 import com.example.spring.entity.Gear;
+import com.example.spring.exception.NotIdException;
 import com.example.spring.repository.CarRepository;
 import com.example.spring.repository.GearRepository;
 import lombok.AllArgsConstructor;
@@ -30,9 +31,14 @@ public class GearService {
         return false;
     }
 
-    public List<Gear> getGear(Long id) {
-        return new ArrayList<>(Collections.singleton(repository.findById(id).get()));
+    public Gear getGear(Long id) {
+        Optional<Gear> gearFromDB = repository.findById(id);
+        if(gearFromDB.isEmpty()){
+            throw new NotIdException("Gear not found");
+        }
+        return gearFromDB.get();
     }
+
     public List<Gear> getGear() {
         return new ArrayList<>(repository.findAll());
     }

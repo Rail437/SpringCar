@@ -2,6 +2,7 @@ package com.example.spring.controller;
 
 import com.example.spring.entity.Engine;
 import com.example.spring.entity.Manual;
+import com.example.spring.exception.NotIdException;
 import com.example.spring.service.ManualService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,18 +44,22 @@ public class ManualController {
                 new ResponseEntity("This Manual already exists.",HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping({"/read/{id}","/read"})
-    public List<Manual> readEngine(@PathVariable Long id){
-        if(id != null) {
-            return manualService.getManual(id);
+    @GetMapping({"/read/{id}"})
+    public Manual readManualById(@PathVariable Long id){
+        if(id == null) {
+            throw new NotIdException("Parameter - id is empty");
         }
+        return manualService.getManual(id);
+    }
+    @GetMapping({"/read"})
+    public List<Manual> readManual(){
         return manualService.getManual();
     }
 
     @PostMapping({"/update/{id}","/update"})
     public ResponseEntity updateEngine(@RequestBody Manual manual, @PathVariable Long id) {
         if(id == null){
-            return new ResponseEntity("Parameter - id is empty" ,HttpStatus.NOT_MODIFIED);
+            throw new NotIdException("Parameter - id is empty");
         }
         return  manualService.updateManual(id,manual) ?
                 new ResponseEntity(HttpStatus.OK):
@@ -64,7 +69,7 @@ public class ManualController {
     @PostMapping({"/delete/{id}","/delete"})
     public ResponseEntity deleteEngine(@PathVariable Long id){
         if(id == null){
-            return new ResponseEntity("Parameter - id is empty" ,HttpStatus.NOT_MODIFIED);
+            throw new NotIdException("Parameter - id is empty");
         }
         return manualService.deleteManualById(id) ?
                 new ResponseEntity(HttpStatus.OK):

@@ -2,6 +2,7 @@ package com.example.spring.service;
 
 import com.example.spring.entity.Car;
 import com.example.spring.entity.Engine;
+import com.example.spring.exception.NotIdException;
 import com.example.spring.repository.CarRepository;
 import com.example.spring.repository.EngineRepository;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -29,8 +29,12 @@ public class EngineService {
         return false;
     }
 
-    public List<Engine> getEngine(Long id) {
-        return repository.findById(id).stream().collect(Collectors.toList());
+    public Engine getEngine(Long id) {
+        Optional<Engine> engine = repository.findById(id);
+        if(engine.isEmpty()){
+            throw new NotIdException("Engine not found");
+        }
+        return engine.get();
     }
 
     public List<Engine> getEngine() {
